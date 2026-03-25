@@ -2,80 +2,64 @@ import { generateDailyPuzzle } from "../engine/puzzleEngine"
 import PuzzleBoard from "../components/puzzle/PuzzleBoard"
 import HeatmapContainer from "../components/heatmap/HeatmapContainerComponent"
 import StreakDisplay from "../components/streak/StreakDisplay"
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useEffect } from "react"
+import { syncDailyScores } from "../sync/syncService"
 
 const Leaderboard = lazy(() => import("../components/leaderboard/Leaderboard"))
 const Achievements = lazy(() => import("../components/achievements/Achievements"))
 
 function HomePage() {
+    const puzzle = generateDailyPuzzle()
 
-  const puzzle = generateDailyPuzzle()
+    useEffect(() => {
+        syncDailyScores()
+    }, [])
 
-  function logout() {
-    localStorage.removeItem("userId")
-    window.location.reload()
-  }
+    function logout() {
+        localStorage.removeItem("userId")
+        window.location.reload()
+    }
 
-  return (
+    return (
+        <div className="min-h-screen bg-[var(--bg-main)] text-[var(--text-primary)] flex flex-col items-center py-8 px-4 md:px-8">
+            <div className="w-full max-w-[1100px] flex justify-between items-center mb-8">
+                <div className="flex flex-col gap-1">
+                    <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                        Logic Looper
+                    </h1>
+                    <StreakDisplay />
+                </div>
 
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-blue-50 flex flex-col items-center py-8 px-4">
+                <button
+                    aria-label="Logout"
+                    onClick={logout}
+                    className="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-sm px-4 py-2 rounded-lg transition border border-zinc-700"
+                >
+                    Logout
+                </button>
+            </div>
 
-      {/* HEADER */}
-      <div className="w-full max-w-[1100px] flex justify-between items-center mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-[1100px]">
+                <div className="premium-card flex flex-col justify-center min-h-[300px]">
+                    <PuzzleBoard puzzle={puzzle} />
+                </div>
 
-        <div className="flex flex-col">
+                <div className="premium-card">
+                    <HeatmapContainer />
+                </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-[#1A2A44]">
-            Logic Looper
-          </h1>
+                <div className="premium-card">
+                    <Suspense fallback={<div className="animate-pulse h-32 bg-zinc-800 rounded-lg"></div>}>
+                        <Leaderboard />
+                    </Suspense>
+                </div>
 
-          <StreakDisplay />
-
+                <div className="premium-card">
+                    <Achievements />
+                </div>
+            </div>
         </div>
-
-        <button
-        aria-label="Submit answer"
-          onClick={logout}
-          className="bg-gray-200 hover:bg-gray-300 text-sm px-3 py-1 rounded transition"
-        >
-          Logout
-        </button>
-
-      </div>
-
-
-      {/* DASHBOARD GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-[1100px]">
-
-        {/* Puzzle */}
-        <div className="bg-white shadow-md hover:shadow-xl transition rounded-xl p-5 w-full">
-          <PuzzleBoard puzzle={puzzle} />
-        </div>
-
-        {/* Heatmap */}
-        <div className="bg-white shadow-md hover:shadow-xl transition rounded-xl p-5 w-full">
-          <HeatmapContainer />
-        </div>
-
-        {/* Leaderboard */}
-        <div className="bg-white shadow-md hover:shadow-xl transition rounded-xl p-5 w-full">
-            <Suspense fallback={<div>Loading...</div>}>
-                 <Leaderboard />
-            </Suspense>
-         
-        </div>
-
-        {/* Achievements */}
-        <div className="bg-white shadow-md hover:shadow-xl transition rounded-xl p-5 w-full">
-          <Achievements />
-        </div>
-
-      </div>
-
-    </div>
-
-  )
-
+    )
 }
 
 export default HomePage

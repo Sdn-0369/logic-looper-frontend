@@ -1,5 +1,5 @@
 import { getAllActivity, saveDailyActivity } from "../db/indexedDB"
-import { API_BASE } from "../../config/api"
+import { API_BASE } from "../config/api"
 
 export async function syncDailyScores() {
 

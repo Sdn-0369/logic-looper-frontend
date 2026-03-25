@@ -26,31 +26,31 @@ function StreakDisplay() {
 
   }, [])
 
- return (
+  return (
 
-  <motion.div
-    className="text-lg font-semibold flex items-center gap-2"
-    initial={{ opacity: 0, y: -10 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.4 }}
-  >
-
-    <motion.span
-      animate={{ scale: [1, 1.25, 1] }}
-      transition={{
-        duration: 1.2,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }}
+    <motion.div
+      className="text-lg font-semibold flex items-center gap-2"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
     >
-      🔥
-    </motion.span>
 
-    Current Streak: {streak} {streak === 1 ? "day" : "days"}
+      <motion.span
+        animate={{ scale: [1, 1.25, 1] }}
+        transition={{
+          duration: 1.2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      >
+        🔥
+      </motion.span>
 
-  </motion.div>
+      Current Streak: {streak} {streak === 1 ? "day" : "days"}
 
-)
+    </motion.div>
+
+  )
 
 }
 

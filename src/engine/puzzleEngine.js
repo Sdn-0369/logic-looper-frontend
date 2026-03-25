@@ -52,11 +52,9 @@ function generatePatternPuzzle(seed) {
 
   const pattern = [shape, shape, shape]
 
-  // pick 4 random options
   const shuffled = [...shapes].sort(() => rng() - 0.5)
   const options = shuffled.slice(0, 4)
 
-  // ensure correct answer is included
   if (!options.includes(shape)) {
     options[Math.floor(rng() * options.length)] = shape
   }

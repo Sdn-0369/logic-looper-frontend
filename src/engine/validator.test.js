@@ -1,4 +1,5 @@
 import { validateAnswer } from "./validator"
+import { test, expect } from "vitest"
 
 test("validates correct answer", () => {
   expect(validateAnswer(8, 8)).toBe(true)

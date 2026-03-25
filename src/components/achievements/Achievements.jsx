@@ -3,43 +3,45 @@ import { getAllActivity } from "../../db/indexedDB"
 
 function Achievements() {
 
-  const [badges, setBadges] = useState([])
+    const [badges, setBadges] = useState([])
 
-  useEffect(() => {
+    useEffect(() => {
 
-    async function load() {
+        async function load() {
 
-      const activity = await getAllActivity()
+            const activity = await getAllActivity()
 
-      const solved = activity.length
+            const solved = activity.length
 
-      const newBadges = []
+            const newBadges = []
 
-      if (solved >= 7) newBadges.push("🔥 7 Day Streak")
-      if (solved >= 30) newBadges.push("🏆 30 Puzzles Solved")
-      if (solved >= 100) newBadges.push("👑 Puzzle Master")
+            if (solved >= 7) newBadges.push("🔥 7 Day Streak")
+            if (solved >= 30) newBadges.push("🏆 30 Puzzles Solved")
+            if (solved >= 100) newBadges.push("👑 Puzzle Master")
 
-      setBadges(newBadges)
+            setBadges(newBadges)
 
-    }
+        }
 
-    load()
+        load()
 
-  }, [])
+    }, [])
 
-  return (
-    <div className="mt-6">
-      <h2 className="font-semibold mb-2">Achievements</h2>
-
-      <div className="flex gap-2 flex-wrap">
-        {badges.map((b,i)=>(
-          <div key={i} className="bg-yellow-200 px-3 py-1 rounded">
-            {b}
-          </div>
-        ))}
-      </div>
-    </div>
-  )
+   return (
+        <div className="w-full">
+            <h2 className="text-xl font-bold mb-4 text-white">🏆 Achievements</h2>
+            <div className="flex gap-3 flex-wrap">
+                {badges.length === 0 ? (
+                    <p className="text-zinc-500 text-sm italic">Play games to earn badges!</p>
+                ) : (
+                    badges.map((b, i) => (
+                        <div key={i} className="bg-zinc-800/80 border border-yellow-500/30 text-yellow-400 font-medium px-4 py-2 rounded-lg shadow-[0_0_15px_rgba(234,179,8,0.1)]">
+                            {b}
+                        </div>
+                    ))
+                )}
+            </div>
+        </div>
+    )
 }
-
 export default Achievements
